@@ -12,7 +12,7 @@ public class CompraRepository {
 
     //Obtener todas las compras de un cliente
     public List<Compra> getByIdCliente(int idCliente){
-        return compraCrudRepository.findByIdClienteOrderByIdCompraAsc(idCliente);
+        return compraCrudRepository.findByIdClienteOrderByIdProductoAsc(idCliente);
     }
 
     //Obtener todas las ventas de una fecha

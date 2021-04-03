@@ -26,6 +26,14 @@ public class Producto {
     @Column(name = "cantidad_stock")
     private Integer cantidadStock;
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     private Boolean estado;
 
     @ManyToOne
@@ -34,6 +42,14 @@ public class Producto {
 
     @OneToMany(mappedBy = "compra")
     private List<ComprasProducto> compras;
+
+    public List<ComprasProducto> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<ComprasProducto> compras) {
+        this.compras = compras;
+    }
 
     public Integer getIdProducto() {
 
