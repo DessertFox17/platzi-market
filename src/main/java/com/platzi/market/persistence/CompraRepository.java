@@ -1,34 +1,39 @@
 package com.platzi.market.persistence;
 
+import com.platzi.market.domain.Purchase;
+import com.platzi.market.domain.repository.PurchaseRepository;
 import com.platzi.market.persistence.crud.CompraCrudRepository;
 import com.platzi.market.persistence.entity.Compra;
+import com.platzi.market.persistence.mapper.PurchaseMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-public class CompraRepository {
+@Repository
+public class CompraRepository implements PurchaseRepository {
 
+    @Autowired
     private CompraCrudRepository compraCrudRepository;
+    @Autowired
+    private PurchaseMapper mapper;
 
-    //Obtener todas las compras de un cliente
-    public List<Compra> getByIdCliente(int idCliente){
-        return compraCrudRepository.findByIdClienteOrderByIdProductoAsc(idCliente);
+    @Override
+    public List<Purchase> getAll() {
+        return mapper.toPurchases((List<Compra>) compraCrudRepository.findAll());
     }
 
-    //Obtener todas las ventas de una fecha
-    public List<Compra> getByFechaCompra(LocalDateTime fecha){
-        return compraCrudRepository.findByFecha(fecha);
+    @Override
+    public Optional<List<Purchase>> getByClient(String clientId) {
+        return compraCrudRepository.findByIdClienteOrderByIdCompraAsc(clientId)
+                .map(compras -> mapper.toPurchases(compras));
     }
 
-    //Obtener todas las ventas de un cliente en una fecha
-    public List<Compra> getByFechaCompraCliente(LocalDateTime fecha, int idCliente){
-        return compraCrudRepository.findByFechaAndIdClienteOrderByIdClienteAsc(fecha, idCliente);
+    @Override
+    public Purchase save(Purchase purchase) {
+        Compra compra = mapper.toCompra(purchase);
+        compra.getProductos().forEach(producto -> producto.setCompra(compra));
+        return mapper.toPurchase(compraCrudRepository.save(compra));
     }
-    //Obtener todas las ventas de un cliente en una fecha
-    public List<Compra> getByFechaCompraClienteMedioPago(LocalDateTime fecha, int idCliente, String medioPago){
-        return compraCrudRepository.findByFechaAndAndIdClienteAndMedioPagoOrderByFechaAsc(fecha, idCliente, medioPago);
-    }
-
-
-
 }

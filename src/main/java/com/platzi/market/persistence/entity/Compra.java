@@ -10,8 +10,8 @@ public class Compra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
-    private Integer idProducto;
+    @Column(name = "id_compra")
+    private Integer idCompra;
 
     @Column(name = "id_cliente")
     private String idCliente;
@@ -20,6 +20,18 @@ public class Compra {
 
     @Column(name = "medio_pago")
     private String medioPago;
+
+
+    private String comentario;
+
+    private String estado;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    private Cliente cliente;
+
+    @OneToMany(mappedBy = "compra", cascade = {CascadeType.ALL})
+    private List<ComprasProducto> productos;
 
     public Cliente getCliente() {
         return cliente;
@@ -37,23 +49,12 @@ public class Compra {
         this.productos = productos;
     }
 
-    private String comentario;
-
-    private String estado;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
-    private Cliente cliente;
-
-    @OneToMany(mappedBy = "producto")
-    private List<ComprasProducto> productos;
-
-    public Integer getIdProducto() {
-        return idProducto;
+    public Integer getIdCompra() {
+        return idCompra;
     }
 
-    public void setIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void setIdCompra(Integer idProducto) {
+        this.idCompra = idProducto;
     }
 
     public String getIdCliente() {
