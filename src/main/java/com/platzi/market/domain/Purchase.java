@@ -67,11 +67,11 @@ public class Purchase {
         this.state = state;
     }
 
-    public List<PurchaseProduct> getItem() {
+    public List<PurchaseProduct> getItems() {
         return items;
     }
 
-    public void setItem(List<PurchaseProduct> item) {
+    public void setItems(List<PurchaseProduct> items) {
         this.items = items;
     }
 }
